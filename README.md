@@ -1,2 +1,5 @@
-# vlad-orlov.com_code
-Code, published in vlad-orlov.com blog posts
+# vlad-orlov.com Code 
+
+This project has all the code that has been published in my blog [vlad-orlov.com](vlad-orlov.com).
+
+Every folder at the project's root is dedicated to a separate blog post. 
