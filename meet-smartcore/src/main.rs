@@ -42,7 +42,7 @@ fn random_forest() -> Result<(), Failed> {
     let (x, y) = load_bos_dataset();
     // Split data into training/test sets
     let (x_train, x_test, y_train, y_test) = train_test_split(&x, &y, 0.2, true);
-    // Fit logistic regression and predict value estimates using test set
+    // Fit random forest regression and predict value estimates using test set
     let y_hat = RandomForestRegressor::fit(&x_train, &y_train, Default::default())
         .and_then(|lr| lr.predict(&x_test))?;
     // Validate model performance on a test set
@@ -57,12 +57,12 @@ fn cv_random_forest() -> Result<(), Failed> {
     let (x, y) = load_bos_dataset();
     // cross-validate our model
     let results = cross_validate(
-        RandomForestRegressor::fit,
-        &x,
-        &y,
+        RandomForestRegressor::fit,        // estimator
+        &x,                                // features
+        &y,                                // target
         Default::default(),                // hyperparameters
         KFold::default().with_n_splits(3), // 3-fold split
-        mean_absolute_error,
+        mean_absolute_error,               // MAE metric
     )?;
     println!("Random Forest CV MAE: {}", results.mean_test_score());
     Ok(())
@@ -82,7 +82,7 @@ fn save_random_forest_model() -> Result<(), Failed> {
 
 fn linear_regression_ndarray() -> Result<(), Failed> {
     let data = boston::load_dataset();
-    // and turn data into a NxM matrix
+
     let x = Array::from_shape_vec((data.num_samples, data.num_features), data.data).unwrap();
 
     let y = Array::from_shape_vec(data.num_samples, data.target).unwrap();
